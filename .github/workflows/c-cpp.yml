@@ -1,0 +1,40 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        configuration: [Debug, Release]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    # Setup Visual Studio environment
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v1
+
+    # Option 1: If you use a Visual Studio solution (.sln)
+    - name: Build solution
+      run: msbuild YourProject.sln /p:Configuration=${{ matrix.configuration }}
+
+    # Option 2: If you use CMake
+    - name: Install CMake
+      uses: lukka/get-cmake@v3
+
+    - name: Configure with CMake
+      run: cmake -S . -B build -G "Visual Studio 17 2022"
+
+    - name: Build with CMake
+      run: cmake --build build --config ${{ matrix.configuration }}
+
+    # Optional: Run tests if you have CTest
+    - name: Run tests
+      run: ctest --test-dir build --config ${{ matrix.configuration }}
+
