@@ -15,3 +15,4 @@ file(GLOB_RECURSE ENGINE_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/
 add_executable(${CMAKE_PROJECT_NAME})
 target_sources("${CMAKE_PROJECT_NAME}" PRIVATE "${ENGINE_SOURCES}")
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE "${CMAKE_SOURCE_DIR}/include")
+target_precompile_headers(${CMAKE_PROJECT_NAME} PRIVATE "include/pch.h")
