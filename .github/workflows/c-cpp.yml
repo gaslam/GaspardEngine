@@ -6,6 +6,9 @@ on:
 jobs:
   ubuntu-build:
     runs-on: ubuntu-latest
+    env:
+     CC: clang
+     CFLAGS: -Werror
     steps:
     # temp code from: https://github.com/glfw/glfw/blob/dc557ecf38a42b0b93898a7aef69f6dc48bf0e57/.github/workflows/build.yml
     - uses: actions/checkout@v4
