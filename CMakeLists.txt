@@ -17,6 +17,10 @@ target_sources("${CMAKE_PROJECT_NAME}" PRIVATE "${ENGINE_SOURCES}")
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE "${CMAKE_SOURCE_DIR}/include")
 target_precompile_headers(${CMAKE_PROJECT_NAME} PRIVATE "include/pch.h")
 
+add_subdirectory("ThirdParty/glad")
+add_subdirectory("ThirdParty/glfw-3.3.2")
+target_link_libraries("${CMAKE_PROJECT_NAME}" PRIVATE glad glfw)
+
 # set warning level
 
 if(MSVC)
