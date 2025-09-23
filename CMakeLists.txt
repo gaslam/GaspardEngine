@@ -16,3 +16,11 @@ add_executable(${CMAKE_PROJECT_NAME})
 target_sources("${CMAKE_PROJECT_NAME}" PRIVATE "${ENGINE_SOURCES}")
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE "${CMAKE_SOURCE_DIR}/include")
 target_precompile_headers(${CMAKE_PROJECT_NAME} PRIVATE "include/pch.h")
+
+# set warning level
+
+if(MSVC)
+target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE /W4 /WX)
+else()
+target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE -Wall -Wextra -Wpedantic -Werror)
+endif()
