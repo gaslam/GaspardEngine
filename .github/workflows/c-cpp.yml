@@ -34,7 +34,8 @@ jobs:
               "url": "https://github.com/${{ github.actor_id }}",
               "icon_url": "https://avatars.githubusercontent.com/u/${{ github.actor_id }}?v=4"
             },
-            "url": "https://github.com/***"
+            "url": "https://github.com/${{ github.repository }}/pull/${{ github.event.pull_request.number }}"
+
           }
         ]
         }' ${{ secrets.WEBHOOK_URL }})
