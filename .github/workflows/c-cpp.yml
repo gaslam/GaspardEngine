@@ -13,6 +13,8 @@ jobs:
       run: |
           sudo apt update
           sudo apt install libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libxext-dev libwayland-dev libxkbcommon-dev
+    - name: Install GLFW
+      run: sudo apt-get update && sudo apt-get install -y libglfw3-dev
     - name: Build project
       uses: nicledomaS/cmake_build_action@v1.4
       with:
