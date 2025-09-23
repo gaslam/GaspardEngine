@@ -17,3 +17,27 @@ jobs:
         submodule_update: ON
         run_tests: OFF
         unit_test_build: -Dtest=OFF
+    - name: Send a request to webhook
+      run: |
+        RESPONSE=$(curl -H "Content-Type: application/json" -X POST -d '{
+        "username": "GitHub",
+        "content": "@everyone",
+        "embeds": [
+          {
+            "type": "rich",
+            "title": "New Changes",
+            "description": "New changes on DroneGPS repository by ${{ github.actor }}",
+            "color": 2123412,
+            "thumbnail": {
+              "url": "https://avatars.githubusercontent.com/u/160980408?v=4"
+            },
+            "author": {
+              "name": "${{ github.actor }}",
+              "url": "https://github.com/${{ github.actor_id }}",
+              "icon_url": "https://avatars.githubusercontent.com/u/${{ github.actor_id }}?v=4"
+            },
+            "url": "https://github.com/***"
+          }
+        ]
+        }' ${{ secrets.WEBHOOK_URL }})
+        echo "Webhook server response: $RESPONSE"
