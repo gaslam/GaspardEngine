@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.22.3)
 
 
 if(MSVC) 
@@ -16,6 +16,12 @@ add_executable(${CMAKE_PROJECT_NAME})
 target_sources("${CMAKE_PROJECT_NAME}" PRIVATE "${ENGINE_SOURCES}")
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE "${CMAKE_SOURCE_DIR}/include")
 target_precompile_headers(${CMAKE_PROJECT_NAME} PRIVATE "include/pch.h")
+
+function(add_third_party_subdirectory path)
+    set(CMAKE_SUPPRESS_DEVELOPER_WARNINGS 1 CACHE BOOL "Suppress warnings" FORCE)
+    add_subdirectory(${path})
+    set(CMAKE_SUPPRESS_DEVELOPER_WARNINGS 0 CACHE BOOL "Suppress warnings" FORCE)
+endfunction()
 add_subdirectory("ThirdParty/glad")
 add_subdirectory("ThirdParty/glfw-3.3.2")
 target_link_libraries("${CMAKE_PROJECT_NAME}" PRIVATE glad glfw)
