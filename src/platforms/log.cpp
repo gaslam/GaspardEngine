@@ -2,12 +2,26 @@
 #include <iostream>
 #include <chrono>
 #include <ctime>
+#include <fstream>
+#include <filesystem>
 
 
 namespace GaspardEngine {
 	void LogManager::Init(const std::wstring& name)
 	{
 		m_LogName = name;
+
+		std::stringstream s{};
+		auto time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+		std::tm tm{};
+#ifdef _WIN32
+		localtime_s(&tm, &time);
+#else
+		localtime_r(&time, &tm);
+#endif
+		s << ENGINE_LOGS_FOLDER << "Logs_" << std::put_time(&tm, "%Y_%m_%d") << ".txt";
+
+		m_LogFileDir += s.str();
 	}
 
 
@@ -16,6 +30,7 @@ namespace GaspardEngine {
 		LogToScreen(message, logType);
 
 		LogInternal(message, logType);
+		LogToFile(message, logType);
 	}
 
 	void LogManager::LogError(const wchar_t* message)
@@ -72,8 +87,19 @@ namespace GaspardEngine {
 #pragma endregion
 	}
 
-	void LogManager::LogToFile(const wchar_t*, const LogType&)
+	void LogManager::LogToFile(const wchar_t* message, const LogType& type)
 	{
+		if (!std::filesystem::exists(m_LogFileDir))
+		{
+			std::wofstream logFile(m_LogFileDir);
+			logFile.close();
+		}
+		std::wofstream logFile(m_LogFileDir, std::ios::app);
+		if (logFile.is_open())
+		{
+			logFile << FormatString(message, type).str();
+			logFile.close();
+		}
 	}
 
 	void LogManager::LogInternal(const wchar_t* message, const LogType& type)
@@ -105,7 +131,7 @@ namespace GaspardEngine {
 #endif
 		s << L"#" << std::put_time(&tm, L"%Y-%m-%d %X") << L" - ";
 
-		s << message;
+		s << message << "\n";
 
 		return s;
 	}

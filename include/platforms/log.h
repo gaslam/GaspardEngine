@@ -21,6 +21,7 @@ namespace GaspardEngine {
 		void LogInternal(const wchar_t* message,const LogType& type);
 	private:
 		std::wstring m_LogName{};
+		std::string m_LogFileDir{};
 
 		static constexpr size_t m_MaxLogs{ 100 };
 		std::deque<std::wstring> m_Logs{};
