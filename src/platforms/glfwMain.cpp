@@ -36,9 +36,12 @@ int main()
 		end = std::chrono::high_resolution_clock::now();
 		float deltaTime{ std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() / 1000000000.f };
 		start = std::chrono::high_resolution_clock::now();
+		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		Game.GameLogic(deltaTime);
+		glfwSwapBuffers(pWindow);
+		glfwPollEvents();
 	}
-	std::cin.ignore();
 	Game.Close();
 	glfwDestroyWindow(pWindow);
 	glfwTerminate();
