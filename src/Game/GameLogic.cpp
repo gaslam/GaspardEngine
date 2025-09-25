@@ -1,5 +1,4 @@
 #include "Game/GameLogic.h"
-#include <format>
 
 namespace GaspardEngine {
 
@@ -7,7 +6,7 @@ namespace GaspardEngine {
 		m_LogManager = std::make_unique<LogManager>();
 		m_LogManager->Init(L"GameLogger");
 	};
-	void Game::GameLogic(float deltaTime) {
+	void Game::GameLogic(float) {
 	};
 	void Game::Close() noexcept
 	{

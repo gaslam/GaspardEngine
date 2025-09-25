@@ -15,7 +15,6 @@ int main()
 
 	if (pWindow == NULL)
 	{
-		Manager.LogError(L"Cannot create GLFW window.");
 		glfwTerminate();
 		return -1;
 	}
