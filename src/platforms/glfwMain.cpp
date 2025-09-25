@@ -3,6 +3,21 @@
 
 int main()
 {
+#ifdef _WIN32
+#ifdef _MSC_VER 
+#if PRODUCTION_BUILD == 0
+
+	FILE* fpstdin = nullptr;
+	FILE* fpstdout = nullptr;
+	FILE* fpstderr = nullptr;
+	AllocConsole();
+	(void)freopen_s(&fpstdin,"conin$", "r", stdin);
+	(void)freopen_s(&fpstdout,"conout$", "w", stdout);
+	(void)freopen_s(&fpstderr,"conout$", "w", stderr);
+	std::cout.sync_with_stdio();
+#endif
+#endif
+#endif
 	constexpr GLsizei windowWidth{ 800 };
 	constexpr GLsizei windowHeight{ 800 };
 	//this is temporary

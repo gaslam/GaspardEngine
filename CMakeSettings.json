@@ -1,23 +1,46 @@
 ﻿{
   "configurations": [
     {
+      "name": "Debug ImGui",
+      "generator": "Ninja",
+      "configurationType": "Debug",
+      "inheritEnvironments": [ "msvc_x64_x64" ],
+      "buildRoot": "${projectDir}\\out\\build\\${name}",
+      "installRoot": "${projectDir}\\out\\install\\${name}",
+      "ctestCommandArgs": "",
+      "cmakeCommandArgs": "-D PRODUCTION_BUILD=0"
+    },
+    {
       "name": "Debug",
       "generator": "Ninja",
       "configurationType": "Debug",
       "inheritEnvironments": [ "msvc_x64_x64" ],
       "buildRoot": "${projectDir}\\out\\build\\${name}",
       "installRoot": "${projectDir}\\out\\install\\${name}",
-      "ctestCommandArgs": ""
+      "ctestCommandArgs": "",
+      "cmakeCommandArgs": "-D PRODUCTION_BUILD=1"
     },
     {
-      "name": "Shipping",
+      "name": "Production ImGui",
       "generator": "Ninja",
       "configurationType": "RelWithDebInfo",
       "buildRoot": "${projectDir}\\out\\build\\${name}",
       "installRoot": "${projectDir}\\out\\install\\${name}",
       "buildCommandArgs": "",
       "ctestCommandArgs": "",
-      "inheritEnvironments": [ "msvc_x64_x64" ]
+      "inheritEnvironments": [ "msvc_x64_x64" ],
+      "cmakeCommandArgs": "-D PRODUCTION_BUILD=0"
+    },
+    {
+      "name": "Production",
+      "generator": "Ninja",
+      "configurationType": "RelWithDebInfo",
+      "buildRoot": "${projectDir}\\out\\build\\${name}",
+      "installRoot": "${projectDir}\\out\\install\\${name}",
+      "buildCommandArgs": "",
+      "ctestCommandArgs": "",
+      "inheritEnvironments": [ "msvc_x64_x64" ],
+      "cmakeCommandArgs": "-D PRODUCTION_BUILD=1"
     }
   ]
 }

@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.16)
 project(GaspardEngine)
 set(CMAKE_CXX_STANDARD 20)
 
-set(PRODUCTION_BUILD ON CACHE BOOL "Make this a production build, please!!" FORCE)
+set(PRODUCTION_BUILD OFF CACHE BOOL "Make this a production build, please!!")
 
 if(PRODUCTION_BUILD)
 set(CMAKE_INTERPROCEDURAL_OPTIMIZATION true)
@@ -44,8 +44,10 @@ target_compile_definitions("${CMAKE_PROJECT_NAME}" PUBLIC GLFW_INCLUDE_NONE=1)
 
 if(PRODUCTION_BUILD)
 	target_compile_definitions("${CMAKE_PROJECT_NAME}" PUBLIC PRODUCTION_BUILD=1)
+	target_compile_definitions("${CMAKE_PROJECT_NAME}" PUBLIC DEVELOPMENT_BUILD=0)
 else()
 	target_compile_definitions("${CMAKE_PROJECT_NAME}" PUBLIC PRODUCTION_BUILD=0)
+	target_compile_definitions("${CMAKE_PROJECT_NAME}" PUBLIC DEVELOPMENT_BUILD=1)
 endif()
 
 add_subdirectory("ThirdParty/glad")
@@ -56,6 +58,7 @@ target_link_libraries("${CMAKE_PROJECT_NAME}" PRIVATE glad glfw)
 
 if(MSVC)
 target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE /W4 /WX)
+set_target_properties("${CMAKE_PROJECT_NAME}" PROPERTIES LINK_FLAGS "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
 else()
 target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE -Wall -Wextra -Wpedantic -Werror)
 endif()

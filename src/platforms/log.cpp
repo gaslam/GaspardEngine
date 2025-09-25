@@ -1,5 +1,7 @@
 #include "platforms/log.h"
+#if PRODUCTION_BUILD == 0
 #include <iostream>
+#endif // PRODUCTION_BUILD
 #include <chrono>
 #include <ctime>
 #include <fstream>
@@ -27,7 +29,9 @@ namespace GaspardEngine {
 
 	void LogManager::Log(const wchar_t* message, const LogType& logType)
 	{
+#if PRODUCTION_BUILD == 0
 		LogToScreen(message, logType);
+#endif
 
 		LogInternal(message, logType);
 		LogToFile(message, logType);
