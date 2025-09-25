@@ -26,6 +26,6 @@ namespace GaspardEngine {
 		static constexpr size_t m_MaxLogs{ 100 };
 		std::deque<std::wstring> m_Logs{};
 
-		_NODISCARD std::wstringstream FormatString(const wchar_t* message, const LogType& type) const;
+		[[nodiscard]] std::wstringstream FormatString(const wchar_t* message, const LogType& type) const;
 	};
 }
