@@ -8,3 +8,4 @@
 #include <GLFW/glfw3.h>
 #include <platforms/log.h>
 #include <memory>
+#include <vcruntime.h>
