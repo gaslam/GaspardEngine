@@ -1,7 +1,4 @@
 #include "platforms/log.h"
-#if PRODUCTION_BUILD == 0
-#include <iostream>
-#endif // PRODUCTION_BUILD
 #include <chrono>
 #include <ctime>
 #include <fstream>
