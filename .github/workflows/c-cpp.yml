@@ -22,6 +22,7 @@ jobs:
         run_tests: OFF
         unit_test_build: -Dtest=OFF
     - name: Send a request to webhook
+      if: ${{ success() }}
       run: |
         RESPONSE=$(curl -H "Content-Type: application/json" -X POST -d '{
         "username": "GitHub",
@@ -30,10 +31,10 @@ jobs:
           {
             "type": "rich",
             "title": "New Changes",
-            "description": "New changes on DroneGPS repository by ${{ github.actor }}",
+            "description": "New changes on GaspardEngine repository by ${{ github.actor }}",
             "color": 2123412,
             "thumbnail": {
-              "url": "https://avatars.githubusercontent.com/u/160980408?v=4"
+              "url": "https://avatars.githubusercontent.com/u/${{ github.actor_id }}?v=4"
             },
             "author": {
               "name": "${{ github.actor }}",
