@@ -11,9 +11,6 @@ int main()
 	glfwWindowHint(GLFW_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_VERSION_MINOR, 3);
 
-	GaspardEngine::LogManager Manager{};
-	Manager.Init(L"Program manager");
-
 	GLFWwindow* pWindow{ glfwCreateWindow(windowWidth,windowHeight,"GaspardEngine",NULL,NULL) };
 
 	if (pWindow == NULL)
