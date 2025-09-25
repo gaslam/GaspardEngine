@@ -1,0 +1,53 @@
+name: GaspardEngine CI
+
+on:
+  pull_request:
+    branches: [ "main","dev" ]
+jobs:
+  ubuntu-build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2.0.0
+    - name: Install dependencies
+      run: |
+          sudo apt update
+          sudo apt install libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libxext-dev libwayland-dev libxkbcommon-dev
+    - name: Install GLFW
+      run: sudo apt-get update && sudo apt-get install -y libglfw3-dev
+    - name: Build project
+      uses: nicledomaS/cmake_build_action@v1.4
+      with:
+        submodule_update: ON
+        run_tests: OFF
+        unit_test_build: -Dtest=OFF
+  send-webhook:
+    name: Send Webhook Notification
+    runs-on: ubuntu-latest
+    needs: ubuntu-build
+    if: ${{ success() }}  # Ensures it only runs if ubuntu-build succeeded
+    steps:
+      - name: Send a request to webhook
+        run: |
+          RESPONSE=$(curl -H "Content-Type: application/json" -X POST -d '{
+          "username": "GitHub",
+          "content": "@everyone",
+          "embeds": [
+            {
+              "type": "rich",
+              "title": "New Changes",
+              "description": "New changes on GaspardEngine repository by ${{ github.actor }}",
+              "color": 2123412,
+              "thumbnail": {
+                "url": "https://avatars.githubusercontent.com/u/${{ github.actor_id }}?v=4"
+              },
+              "author": {
+                "name": "${{ github.actor }}",
+                "url": "https://github.com/${{ github.actor_id }}",
+                "icon_url": "https://avatars.githubusercontent.com/u/${{ github.actor_id }}?v=4"
+              },
+              "url": "https://github.com/${{ github.repository }}/pull/${{ github.event.pull_request.number }}"
+            }
+          ]
+          }' ${{ secrets.WEBHOOK_URL }})
+          echo "Webhook server response: $RESPONSE"
