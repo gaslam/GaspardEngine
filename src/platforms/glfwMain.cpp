@@ -1,7 +1,10 @@
 #include <Game/GameLogic.h>
 #include <chrono>
+
 int main()
 {
+	constexpr GLsizei windowWidth{ 800 };
+	constexpr GLsizei windowHeight{ 800 };
 	//this is temporary
 	//TODO: replace this with window while loop
 	glfwInit();
@@ -11,7 +14,7 @@ int main()
 	GaspardEngine::LogManager Manager{};
 	Manager.Init(L"Program manager");
 
-	GLFWwindow* pWindow{ glfwCreateWindow(800,800,"GaspardEngine",NULL,NULL) };
+	GLFWwindow* pWindow{ glfwCreateWindow(windowWidth,windowHeight,"GaspardEngine",NULL,NULL) };
 
 	if (pWindow == NULL)
 	{
@@ -27,7 +30,7 @@ int main()
 
 	gladLoadGL();
 
-	glViewport(0, 0, 800, 800);
+	glViewport(0, 0, windowWidth, windowHeight);
 
 	std::chrono::high_resolution_clock::time_point start{ std::chrono::high_resolution_clock::now() };
 	std::chrono::high_resolution_clock::time_point end{ };
