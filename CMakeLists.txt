@@ -1,5 +1,15 @@
 cmake_minimum_required(VERSION 3.16)
 
+project(GaspardEngine)
+set(CMAKE_CXX_STANDARD 20)
+
+set(PRODUCTION_BUILD OFF CACHE BOOL "Make this a production build, please!!")
+
+if(PRODUCTION_BUILD)
+set(CMAKE_INTERPROCEDURAL_OPTIMIZATION true)
+else()
+set(CMAKE_INTERPROCEDURAL_OPTIMIZATION false)
+endif()
 
 if(MSVC) 
 set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
@@ -7,8 +17,11 @@ set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Release>:Release>")
 add_compile_options(/arch:AVX2)
 endif()
 
-project(GaspardEngine)
-set(CMAKE_CXX_STANDARD 20)
+set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+set(GLFW_INSTALL OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
 
 #set folder location for resources like textures, shaders, etc..
 set(ENGINE_RESOURCE_FOLDER "Resources/")
@@ -27,6 +40,16 @@ target_sources("${CMAKE_PROJECT_NAME}" PRIVATE "${ENGINE_SOURCES}")
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE "${CMAKE_SOURCE_DIR}/include")
 target_precompile_headers(${CMAKE_PROJECT_NAME} PRIVATE "include/pch.h")
 
+target_compile_definitions("${CMAKE_PROJECT_NAME}" PUBLIC GLFW_INCLUDE_NONE=1)
+
+if(PRODUCTION_BUILD)
+	target_compile_definitions("${CMAKE_PROJECT_NAME}" PUBLIC PRODUCTION_BUILD=1)
+	target_compile_definitions("${CMAKE_PROJECT_NAME}" PUBLIC DEVELOPMENT_BUILD=0)
+else()
+	target_compile_definitions("${CMAKE_PROJECT_NAME}" PUBLIC PRODUCTION_BUILD=0)
+	target_compile_definitions("${CMAKE_PROJECT_NAME}" PUBLIC DEVELOPMENT_BUILD=1)
+endif()
+
 add_subdirectory("ThirdParty/glad")
 add_subdirectory("ThirdParty/glfw-3.3.2")
 target_link_libraries("${CMAKE_PROJECT_NAME}" PRIVATE glad glfw)
@@ -35,6 +58,7 @@ target_link_libraries("${CMAKE_PROJECT_NAME}" PRIVATE glad glfw)
 
 if(MSVC)
 target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE /W4 /WX)
+set_target_properties("${CMAKE_PROJECT_NAME}" PROPERTIES LINK_FLAGS "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
 else()
 target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE -Wall -Wextra -Wpedantic -Werror)
 endif()
