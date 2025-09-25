@@ -8,8 +8,6 @@ namespace GaspardEngine {
 		m_LogManager->Init(L"GameLogger");
 	};
 	void Game::GameLogic(float deltaTime) {
-		auto test{ std::format(L"deltaTime {}", deltaTime) };
-		m_LogManager->LogInfo(test.c_str());
 	};
 	void Game::Close() noexcept
 	{
